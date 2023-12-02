@@ -1,4 +1,3 @@
-
 def check_game(game):
     count = {}
     for cubes in game.split('; '):
@@ -24,5 +23,3 @@ with open('input.txt', 'r') as f:
     for line in f:
         count += int(process_line(line))
     print(count)
-
-
