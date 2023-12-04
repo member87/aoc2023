@@ -7,15 +7,12 @@ with open('input.txt') as f:
     for line in f.readlines():
         [card_num, cards] = line[:-1].split(': ')
         [win, have] = (cards.split('|'))
-        print(card_num)
         card_num = card_num.split()[1]
         win = list(filter(None, win.split(' ')))
         have = list(filter(None, have.split(' ')))
         intersect = np.intersect1d(win, have)
         count = len(intersect)
-
         
-        print('CARDS ' + card_num + ': ' + str(count) + ' matching numbers')
         card_count[str(card_num)] = card_count.get(str(card_num), 0) + 1
         for x in range(card_count.get(str(card_num), 0)):
             for i in range(count):
