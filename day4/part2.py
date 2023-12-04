@@ -1,9 +1,7 @@
 import numpy as np
 
 card_count = {}
-
 with open('input.txt') as f:
-    count = 0
     for line in f.readlines():
         [card_num, cards] = line[:-1].split(': ')
         [win, have] = (cards.split('|'))
