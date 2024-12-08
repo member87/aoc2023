@@ -38,7 +38,8 @@ func main() {
 	}
 
 	var visited []string
-	fmt.Println(solve(puzzle, currentRow, currentCol, 0, -1, 0, visited, currentRow, currentCol))
+	var allValid []string
+	fmt.Println(solve(puzzle, currentRow, currentCol, 0, -1, 0, visited, allValid, currentRow, currentCol))
 }
 
 func countChar(s []string, c string) int {
@@ -59,6 +60,7 @@ func solve(
 	y int,
 	changeCount int,
 	visited []string,
+	allValid []string,
 	guardStartRow int,
 	guardStartCol int,
 ) int {
@@ -71,9 +73,11 @@ func solve(
 	if changeCount == 0 && puzzle[currentRow+y][currentCol+x] != "#" && !(currentRow == guardStartRow && currentCol == guardStartCol) {
 		prev := puzzle[currentRow+y][currentCol+x]
 		puzzle[currentRow+y][currentCol+x] = "0"
-		total += solve(puzzle, currentRow, currentCol, x, y, 1, visited, guardStartRow, guardStartCol)
+		total += solve(puzzle, guardStartRow, guardStartCol, x, y, 1, visited, allValid, guardStartRow, guardStartCol)
 		visited = make([]string, 0)
 		puzzle[currentRow+y][currentCol+x] = prev
+	} else if changeCount != 0 && slices.Contains(allValid, coord) {
+		return 0
 	}
 
 	for true {
@@ -85,6 +89,7 @@ func solve(
 
 			coord = fmt.Sprintf("%d,%d,%d,%d", currentCol, currentRow, x, y)
 			if changeCount > 2 && slices.Contains(visited, coord) {
+				allValid = append(allValid, coord)
 				return 1
 			} else if changeCount > 1000 {
 				return 0
@@ -107,7 +112,7 @@ func solve(
 		}
 	}
 
-	return total + solve(puzzle, currentRow+y, currentCol+x, x, y, changeCount, visited, guardStartRow, guardStartCol)
+	return total + solve(puzzle, currentRow+y, currentCol+x, x, y, changeCount, visited, allValid, guardStartRow, guardStartCol)
 }
 
 func printPuzzle(puzzle [][]string, currentRow int, currentCol int) {
